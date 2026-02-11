@@ -1,22 +1,18 @@
 <!DOCTYPE html>
 <html lang="vi">
- 
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happy Valentine's Day 💕</title>
 
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Montserrat:wght@300;400;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Montserrat:wght@300;400;600&family=Great+Vibes&display=swap"
         rel="stylesheet">
 
     <style>
-        /* ============================================
-           🎨 BIẾN MÀU SẮC - DỄ DÀNG THAY ĐỔI
-           ============================================ */
         :root {
             --bg-gradient-start: #1a0a2e;
             --bg-gradient-mid: #0d0015;
@@ -27,6 +23,7 @@
             --neon-pink: #ff2d75;
             --neon-purple: #a855f7;
             --neon-gold: #ffd700;
+            --neon-rose: #ff6b9d;
             --glass-bg: rgba(255, 255, 255, 0.08);
             --glass-border: rgba(255, 255, 255, 0.18);
             --text-primary: #ffffff;
@@ -45,10 +42,24 @@
             height: 100%;
             overflow: hidden;
             font-family: 'Montserrat', sans-serif;
+            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ctext y='18' font-size='18'%3E💖%3C/text%3E%3C/svg%3E") 12 12, auto;
         }
 
         body {
             background: radial-gradient(ellipse at center, var(--bg-gradient-start) 0%, var(--bg-gradient-mid) 50%, var(--bg-gradient-end) 100%);
+        }
+
+        /* Vignette overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.5) 100%);
+            pointer-events: none;
+            z-index: 999;
         }
 
         #canvas-container {
@@ -60,9 +71,7 @@
             z-index: 1;
         }
 
-        /* ============================================
-           ⭐ HIỆU ỨNG SAO BĂNG NỀN
-           ============================================ */
+        /* ⭐ SAO BĂNG */
         .shooting-stars {
             position: fixed;
             top: 0;
@@ -90,9 +99,9 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            width: 100px;
-            height: 1px;
-            background: linear-gradient(90deg, rgba(255, 255, 255, 0.8), transparent);
+            width: 120px;
+            height: 1.5px;
+            background: linear-gradient(90deg, rgba(255, 107, 157, 0.9), rgba(255, 255, 255, 0.6), transparent);
             right: 4px;
         }
 
@@ -112,9 +121,43 @@
             }
         }
 
-        /* ============================================
-           🌟 BỌT SÁNG NỀN (BOKEH)
-           ============================================ */
+        /* 🌟 TWINKLING STARS */
+        .twinkling-stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .twinkle-star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle-anim var(--dur) ease-in-out infinite;
+            animation-delay: var(--delay);
+        }
+
+        @keyframes twinkle-anim {
+
+            0%,
+            100% {
+                opacity: 0.2;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.8);
+                box-shadow: 0 0 6px 2px rgba(255, 255, 255, 0.4);
+            }
+        }
+
+        /* 🌟 BOKEH */
         .bokeh-container {
             position: fixed;
             top: 0;
@@ -153,9 +196,7 @@
             }
         }
 
-        /* ============================================
-           💕 HIỆU ỨNG TRÁI TIM RƠI
-           ============================================ */
+        /* 💕 TRÁI TIM RƠI */
         .falling-hearts {
             position: fixed;
             top: 0;
@@ -177,19 +218,21 @@
 
         @keyframes fall {
             0% {
-                transform: translateY(0) rotate(0deg);
+                transform: translateY(0) rotate(0deg) scale(1);
                 opacity: 0.6;
             }
 
+            50% {
+                opacity: 0.4;
+            }
+
             100% {
-                transform: translateY(100vh) rotate(360deg);
+                transform: translateY(100vh) rotate(360deg) scale(0.5);
                 opacity: 0;
             }
         }
 
-        /* ============================================
-           🖼️ KHUNG ẢNH XOAY QUANH TRÁI TIM - NÂNG CẤP
-           ============================================ */
+        /* 🖼️ KHUNG ẢNH */
         .floating-photos {
             position: fixed;
             top: 0;
@@ -205,34 +248,66 @@
             position: absolute;
             width: 100px;
             height: 100px;
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 255, 255, 0.25);
-            border-radius: 12px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.03));
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 2px solid transparent;
+            border-radius: 14px;
             padding: 4px;
             box-shadow:
-                0 0 25px rgba(255, 45, 117, 0.4),
-                0 8px 32px rgba(0, 0, 0, 0.4),
-                inset 0 0 20px rgba(255, 255, 255, 0.1);
+                0 0 25px rgba(255, 45, 117, 0.35),
+                0 8px 32px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
             overflow: hidden;
             opacity: 0;
             visibility: hidden;
-            transition: box-shadow 0.3s ease;
+            background-clip: padding-box;
+            pointer-events: auto;
+            cursor: pointer;
         }
 
+        /* Animated neon border */
         .photo-frame::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(var(--border-angle, 0deg),
+                    var(--neon-pink), var(--neon-purple), var(--neon-rose), var(--neon-pink));
+            border-radius: 16px;
+            z-index: -1;
+            animation: rotate-border 4s linear infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes rotate-border {
+            to {
+                --border-angle: 360deg;
+            }
+        }
+
+        @property --border-angle {
+            syntax: '<angle>';
+            initial-value: 0deg;
+            inherits: false;
+        }
+
+        /* Shimmer overlay */
+        .photo-frame::after {
             content: '';
             position: absolute;
             top: -50%;
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(45deg,
-                    transparent 40%,
-                    rgba(255, 255, 255, 0.1) 50%,
+            background: linear-gradient(45deg, transparent 40%,
+                    rgba(255, 255, 255, 0.08) 50%,
                     transparent 60%);
-            animation: shimmer 4s ease-in-out infinite;
+            animation: shimmer 5s ease-in-out infinite;
+            z-index: 2;
+            pointer-events: none;
         }
 
         @keyframes shimmer {
@@ -251,7 +326,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 8px;
+            border-radius: 10px;
             position: relative;
             z-index: 1;
         }
@@ -260,7 +335,7 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(135deg, var(--neon-pink) 0%, var(--neon-purple) 100%);
-            border-radius: 8px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -269,16 +344,7 @@
             z-index: 1;
         }
 
-        @media (max-width: 768px) {
-            .photo-frame {
-                width: 70px;
-                height: 70px;
-            }
-        }
-
-        /* ============================================
-           🎭 NÚT BẮT ĐẦU - GLASSMORPHISM
-           ============================================ */
+        /* 🎭 START SCREEN */
         #start-screen {
             position: fixed;
             top: 0;
@@ -290,26 +356,89 @@
             justify-content: center;
             align-items: center;
             z-index: 100;
-            background: radial-gradient(ellipse at center, var(--bg-gradient-start) 0%, var(--bg-gradient-mid) 50%, var(--bg-gradient-end) 100%);
+            background: linear-gradient(135deg, #0d001a 0%, #1a0a2e 30%, #1e0533 50%, #0d0015 70%, #000 100%);
+            background-size: 400% 400%;
+            animation: gradient-shift 12s ease infinite;
+        }
+
+        @keyframes gradient-shift {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
         .start-title {
-            font-family: 'Dancing Script', cursive;
-            font-size: clamp(2rem, 8vw, 4rem);
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(2.5rem, 10vw, 5rem);
             color: var(--text-primary);
             text-shadow: 0 0 30px var(--neon-pink), 0 0 60px var(--neon-pink);
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
             text-align: center;
             padding: 0 1rem;
             animation: glow-pulse 2s ease-in-out infinite;
+            background: linear-gradient(90deg, #fff, #ffd4e5, #fff, #ffd4e5, #fff);
+            background-size: 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow-pulse 2s ease-in-out infinite, shimmer-text 4s ease-in-out infinite;
+        }
+
+        @keyframes shimmer-text {
+            0% {
+                background-position: -200% center;
+            }
+
+            100% {
+                background-position: 200% center;
+            }
         }
 
         .start-subtitle {
             font-family: 'Montserrat', sans-serif;
-            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            font-size: clamp(0.85rem, 2vw, 1.1rem);
             color: var(--text-secondary);
-            margin-bottom: 2rem;
+            margin-bottom: 0.8rem;
             text-align: center;
+            letter-spacing: 2px;
+            animation: fade-in-up 1.5s ease 0.5s both;
+        }
+
+        @keyframes fade-in-up {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .sparkle-divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 2rem;
+            color: var(--neon-pink);
+            font-size: 0.9rem;
+            opacity: 0.6;
+            animation: fade-in-up 1.5s ease 0.8s both;
+        }
+
+        .sparkle-divider .line {
+            width: 40px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neon-pink), transparent);
         }
 
         @keyframes glow-pulse {
@@ -317,18 +446,20 @@
             0%,
             100% {
                 text-shadow: 0 0 30px var(--neon-pink), 0 0 60px var(--neon-pink);
+                filter: brightness(1);
             }
 
             50% {
                 text-shadow: 0 0 50px var(--neon-pink), 0 0 100px var(--neon-pink), 0 0 150px var(--neon-purple);
+                filter: brightness(1.15);
             }
         }
 
         .start-btn {
-            background: var(--glass-bg);
+            background: rgba(255, 45, 117, 0.1);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
+            border: none;
             border-radius: 50px;
             padding: 1rem 3rem;
             font-family: 'Montserrat', sans-serif;
@@ -339,11 +470,11 @@
             position: relative;
             overflow: hidden;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow:
-                0 0 20px rgba(255, 45, 117, 0.3),
-                inset 0 0 20px rgba(255, 255, 255, 0.05);
+            animation: fade-in-up 1.5s ease 1s both;
+            z-index: 1;
         }
 
+        /* Animated gradient border for button */
         .start-btn::before {
             content: '';
             position: absolute;
@@ -351,34 +482,43 @@
             left: -2px;
             right: -2px;
             bottom: -2px;
-            background: linear-gradient(45deg, var(--neon-pink), var(--neon-purple), var(--neon-pink));
+            background: linear-gradient(var(--btn-angle, 0deg),
+                    var(--neon-pink), var(--neon-purple), var(--neon-gold), var(--neon-rose), var(--neon-pink));
             border-radius: 52px;
+            z-index: -2;
+            animation: btn-border-rotate 3s linear infinite;
+        }
+
+        @property --btn-angle {
+            syntax: '<angle>';
+            initial-value: 0deg;
+            inherits: false;
+        }
+
+        @keyframes btn-border-rotate {
+            to {
+                --btn-angle: 360deg;
+            }
+        }
+
+        /* Inner background */
+        .start-btn::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            right: 2px;
+            bottom: 2px;
+            background: rgba(13, 0, 21, 0.85);
+            border-radius: 48px;
             z-index: -1;
-            opacity: 0;
-            transition: opacity 0.3s ease;
         }
 
         .start-btn:hover {
             transform: translateY(-3px) scale(1.05);
             box-shadow:
                 0 0 40px rgba(255, 45, 117, 0.5),
-                0 20px 40px rgba(0, 0, 0, 0.3),
-                inset 0 0 20px rgba(255, 255, 255, 0.1);
-        }
-
-        .start-btn:hover::before {
-            opacity: 1;
-            animation: neon-rotate 2s linear infinite;
-        }
-
-        @keyframes neon-rotate {
-            0% {
-                filter: hue-rotate(0deg);
-            }
-
-            100% {
-                filter: hue-rotate(360deg);
-            }
+                0 20px 40px rgba(0, 0, 0, 0.3);
         }
 
         .start-btn:active {
@@ -414,9 +554,7 @@
             }
         }
 
-        /* ============================================
-           💌 LỜI CHÚC - ĐÃ SỬA HIỂN THỊ
-           ============================================ */
+        /* 💌 MESSAGE */
         #message-container {
             position: fixed;
             bottom: 15px;
@@ -429,56 +567,133 @@
             width: 90%;
             max-width: 650px;
             padding: 1rem 1.8rem;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 45, 117, 0.3);
+            background: rgba(10, 0, 20, 0.85);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: none;
             border-radius: 18px;
-            box-shadow:
-                0 0 30px rgba(255, 45, 117, 0.2),
-                0 10px 30px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        /* Animated gradient border for message */
+        #message-container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(var(--msg-angle, 0deg),
+                    var(--neon-pink), var(--neon-purple), var(--neon-gold), var(--neon-rose), var(--neon-pink));
+            border-radius: 22px;
+            z-index: -2;
+            animation: msg-border-rotate 5s linear infinite;
+            opacity: 0.7;
+        }
+
+        @property --msg-angle {
+            syntax: '<angle>';
+            initial-value: 0deg;
+            inherits: false;
+        }
+
+        @keyframes msg-border-rotate {
+            to {
+                --msg-angle: 360deg;
+            }
+        }
+
+        /* Inner bg */
+        #message-container::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            right: 2px;
+            bottom: 2px;
+            background: rgba(10, 0, 20, 0.92);
+            border-radius: 18px;
+            z-index: -1;
         }
 
         .message-title {
-            font-family: 'Dancing Script', cursive;
-            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(2rem, 5vw, 3rem);
             color: var(--heart-color-primary);
             text-shadow: 0 0 25px var(--neon-pink);
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
+            position: relative;
+        }
+
+        .message-title-deco {
+            display: inline-block;
+            margin: 0 8px;
+            font-size: 0.6em;
+            vertical-align: middle;
+            animation: sparkle-rotate 3s linear infinite;
+            opacity: 0.8;
+        }
+
+        @keyframes sparkle-rotate {
+            0% {
+                transform: rotate(0deg) scale(1);
+            }
+
+            50% {
+                transform: rotate(180deg) scale(1.2);
+            }
+
+            100% {
+                transform: rotate(360deg) scale(1);
+            }
         }
 
         .message-text {
             font-family: 'Montserrat', sans-serif;
-            font-size: clamp(0.95rem, 2.2vw, 1.15rem);
-            font-weight: 400;
+            font-size: clamp(0.85rem, 2vw, 1.05rem);
+            font-weight: 300;
             color: #ffffff;
-            line-height: 1.9;
+            line-height: 1.75;
             opacity: 1 !important;
         }
 
         .message-text .char {
             display: inline;
             opacity: 0;
+            filter: blur(4px);
+            transition: filter 0.3s;
+        }
+
+        .message-text .char.visible {
+            filter: blur(0);
         }
 
         .message-signature {
-            margin-top: 1.2rem;
-            font-family: 'Dancing Script', cursive;
+            margin-top: 1rem;
+            font-family: 'Great Vibes', cursive;
             font-size: clamp(1.3rem, 3vw, 1.6rem);
             color: var(--neon-gold);
             text-shadow: 0 0 15px var(--neon-gold);
+            position: relative;
         }
 
-        /* ============================================
-           🎵 NÚT ĐIỀU KHIỂN NHẠC
-           ============================================ */
+        .message-signature::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neon-gold), transparent);
+            margin: 6px auto 0;
+        }
+
+        /* 🎵 MUSIC */
         #music-toggle {
             position: fixed;
             top: 20px;
             right: 20px;
             z-index: 100;
-            width: 50px;
-            height: 50px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             background: var(--glass-bg);
             backdrop-filter: blur(10px);
@@ -488,7 +703,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
             color: var(--text-primary);
             transition: all 0.3s ease;
             opacity: 0;
@@ -498,6 +712,23 @@
         #music-toggle:hover {
             transform: scale(1.1);
             box-shadow: 0 0 20px rgba(255, 45, 117, 0.4);
+        }
+
+        #music-toggle:active::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid var(--neon-pink);
+            animation: ripple-out 0.6s ease-out;
+        }
+
+        @keyframes ripple-out {
+            to {
+                transform: scale(2);
+                opacity: 0;
+            }
         }
 
         .music-bars {
@@ -554,9 +785,9 @@
         #song-info {
             position: fixed;
             top: 20px;
-            right: 80px;
+            right: 78px;
             z-index: 100;
-            padding: 8px 15px;
+            padding: 8px 16px;
             background: var(--glass-bg);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
@@ -574,17 +805,13 @@
         }
 
         @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
+            to {
                 transform: rotate(360deg);
             }
         }
 
         #song-info .text {
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             color: var(--text-secondary);
             max-width: 150px;
             overflow: hidden;
@@ -597,7 +824,7 @@
             top: 20px;
             left: 20px;
             z-index: 100;
-            padding: 10px 20px;
+            padding: 10px 18px;
             background: var(--glass-bg);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
@@ -615,36 +842,40 @@
         }
 
         #date-display .label {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--text-secondary);
             text-transform: uppercase;
             letter-spacing: 2px;
         }
 
-        /* ============================================
-           📱 RESPONSIVE - MOBILE
-           ============================================ */
+        #date-display .heart-icon {
+            display: inline-block;
+            animation: heartbeat 1.2s ease-in-out infinite;
+            margin-left: 4px;
+        }
+
+        /* 📱 RESPONSIVE */
         @media (max-width: 768px) {
             #message-container {
                 bottom: 8px;
-                padding: 0.8rem 1rem;
+                padding: 0.7rem 1rem;
                 max-width: 95%;
                 border-radius: 14px;
             }
 
             .message-title {
                 font-size: 1.4rem;
-                margin-bottom: 0.5rem;
+                margin-bottom: 0.4rem;
             }
 
             .message-text {
-                font-size: 0.8rem;
-                line-height: 1.6;
+                font-size: 0.78rem;
+                line-height: 1.55;
             }
 
             .message-signature {
                 font-size: 1rem;
-                margin-top: 0.6rem;
+                margin-top: 0.5rem;
             }
 
             .photo-frame {
@@ -657,9 +888,13 @@
                 font-size: 1rem;
             }
 
+            .start-title {
+                font-size: clamp(2rem, 8vw, 3.5rem);
+            }
+
             #music-toggle {
-                top: 15px;
-                right: 15px;
+                top: 12px;
+                right: 12px;
                 width: 40px;
                 height: 40px;
             }
@@ -683,7 +918,287 @@
             }
         }
 
-        /* Loading overlay */
+        /* 🖼️ PHOTO LIGHTBOX */
+        #photo-lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        #photo-lightbox.active {
+            display: flex;
+        }
+
+        #photo-lightbox img {
+            max-width: 85%;
+            max-height: 80vh;
+            border-radius: 16px;
+            border: 3px solid var(--neon-pink);
+            box-shadow: 0 0 60px rgba(255, 45, 117, 0.5), 0 0 120px rgba(168, 85, 247, 0.2);
+            animation: lightbox-in 0.4s ease;
+        }
+
+        @keyframes lightbox-in {
+            from {
+                transform: scale(0.7);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        #lightbox-close {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2001;
+        }
+
+        /* 🎆 TOUCH FIREWORK */
+        .touch-heart {
+            position: fixed;
+            pointer-events: none;
+            z-index: 200;
+            animation: heart-burst 0.8s ease-out forwards;
+            font-size: 18px;
+        }
+
+        @keyframes heart-burst {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(0.3);
+                opacity: 0;
+            }
+        }
+
+        /* ⏰ COUNTDOWN */
+        .countdown-row {
+            display: flex;
+            gap: 6px;
+            margin-top: 4px;
+        }
+
+        .countdown-unit {
+            text-align: center;
+        }
+
+        .countdown-num {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1rem;
+            color: var(--neon-gold);
+            text-shadow: 0 0 8px var(--neon-gold);
+            font-weight: 700;
+        }
+
+        .countdown-label {
+            font-size: 0.45rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* 💌 MESSAGE CAROUSEL NAV */
+        .message-nav {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 0.8rem;
+        }
+
+        .message-nav-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 45, 117, 0.15);
+            border: 1px solid rgba(255, 45, 117, 0.3);
+            color: var(--neon-pink);
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .message-nav-btn:hover {
+            background: rgba(255, 45, 117, 0.3);
+            transform: scale(1.1);
+        }
+
+        .message-dots {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .message-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transition: all 0.3s;
+        }
+
+        .message-dot.active {
+            background: var(--neon-pink);
+            box-shadow: 0 0 8px var(--neon-pink);
+            width: 8px;
+            height: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .countdown-num {
+                font-size: 0.85rem;
+            }
+
+            .message-nav-btn {
+                width: 30px;
+                height: 30px;
+                font-size: 0.8rem;
+            }
+        }
+
+
+        /* 💌 SHAKE SURPRISE */
+        .shake-flash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 45, 117, 0.3), transparent 70%);
+            z-index: 250;
+            pointer-events: none;
+            animation: shake-flash-anim 0.6s ease-out forwards;
+        }
+
+        @keyframes shake-flash-anim {
+            0% {
+                opacity: 1;
+                transform: scale(0.5);
+            }
+
+            50% {
+                opacity: 0.8;
+                transform: scale(1.2);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(1.5);
+            }
+        }
+
+        .shake-emoji {
+            position: fixed;
+            pointer-events: none;
+            z-index: 260;
+            animation: shake-emoji-fly 1.5s ease-out forwards;
+        }
+
+        @keyframes shake-emoji-fly {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(0.5) rotate(0deg);
+            }
+
+            50% {
+                opacity: 1;
+                transform: translate(var(--sx), var(--sy)) scale(1.2) rotate(180deg);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translate(var(--ex), var(--ey)) scale(0.5) rotate(360deg);
+            }
+        }
+
+        /* 💋 KISS EFFECT */
+        .kiss-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 210;
+            font-size: 28px;
+            animation: kiss-fly 1.2s ease-out forwards;
+        }
+
+        @keyframes kiss-fly {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(0.3);
+            }
+
+            40% {
+                opacity: 1;
+                transform: translate(var(--kx), var(--ky)) scale(1.3);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translate(calc(var(--kx) * 1.5), calc(var(--ky) * 1.5)) scale(0.5);
+            }
+        }
+
+        .heart-flash {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 105, 180, 0.4), transparent 70%);
+            z-index: 200;
+            pointer-events: none;
+            animation: heart-flash-pulse 0.8s ease-out forwards;
+        }
+
+        @keyframes heart-flash-pulse {
+            0% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(0.3);
+            }
+
+            50% {
+                opacity: 0.8;
+                transform: translate(-50%, -50%) scale(1.5);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(2);
+            }
+        }
+
+        /* Loading */
         #loading {
             position: fixed;
             top: 0;
@@ -711,6 +1226,29 @@
             letter-spacing: 3px;
         }
 
+        .loading-dots::after {
+            content: '';
+            animation: loading-dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes loading-dots {
+            0% {
+                content: '';
+            }
+
+            25% {
+                content: '.';
+            }
+
+            50% {
+                content: '..';
+            }
+
+            75% {
+                content: '...';
+            }
+        }
+
         @keyframes heartbeat {
 
             0%,
@@ -726,70 +1264,63 @@
 </head>
 
 <body>
-    <!-- Loading Screen -->
+    <!-- Loading -->
     <div id="loading">
         <div class="loading-heart">💕</div>
-        <div class="loading-text">LOADING...</div>
+        <div class="loading-text">LOADING<span class="loading-dots"></span></div>
     </div>
 
-    <!-- Background Effects -->
+    <!-- Background -->
     <div class="shooting-stars" id="shooting-stars"></div>
+    <div class="twinkling-stars" id="twinkling-stars"></div>
     <div class="bokeh-container" id="bokeh-container"></div>
 
     <!-- Start Screen -->
     <div id="start-screen">
         <div class="start-hearts" id="start-hearts"></div>
-        <h1 class="start-title">✨ Happy Valentine's Day ✨</h1>
+        <h1 class="start-title">Happy Valentine's Day</h1>
         <p class="start-subtitle">Một món quà nhỏ dành riêng cho em</p>
+        <div class="sparkle-divider">
+            <span class="line"></span>
+            <span>✦</span>
+            <span>💕</span>
+            <span>✦</span>
+            <span class="line"></span>
+        </div>
         <button class="start-btn" id="start-btn">💝 Nhấn để mở quà 💝</button>
     </div>
 
-    <!-- Three.js Canvas -->
+    <!-- Three.js -->
     <div id="canvas-container"></div>
 
     <!-- Falling Hearts -->
     <div class="falling-hearts" id="falling-hearts"></div>
 
-    <!-- ============================================
-         🖼️ KHUNG ẢNH - THAY ẢNH Ở ĐÂY
-         ============================================ -->
+    <!-- Photo Frames -->
     <div class="floating-photos" id="floating-photos">
-        <div class="photo-frame" id="photo-1">
-            <img src="Ảnh 1.jpg" alt="Ảnh 1">
-        </div>
-        <div class="photo-frame" id="photo-2">
-            <img src="Ảnh 2.jpg" alt="Ảnh 2">
-        </div>
-        <div class="photo-frame" id="photo-3">
-            <img src="Ảnh 3.jpg" alt="Ảnh 3">
-        </div>
-        <div class="photo-frame" id="photo-4">
-            <img src="Ảnh 4.jpg" alt="Ảnh 4">
-        </div>
-        <div class="photo-frame" id="photo-5">
-            <img src="Ảnh 5.jpg" alt="Ảnh 5">
-        </div>
-        <div class="photo-frame" id="photo-6">
-            <img src="Ảnh 6.jpg" alt="Ảnh 6">
-        </div>
-        <div class="photo-frame" id="photo-7">
-            <img src="Ảnh 7.jpg" alt="Ảnh 7">
-        </div>
-        <div class="photo-frame" id="photo-8">
-            <img src="Ảnh 8.jpg" alt="Ảnh 8">
-        </div>
-        <div class="photo-frame" id="photo-9">
-            <img src="Ảnh 9.jpg" alt="Ảnh 9">
-        </div>
-        <div class="photo-frame" id="photo-10">
-            <img src="Ảnh 10.jpg" alt="Ảnh 10">
-        </div>
+        <div class="photo-frame" id="photo-1"><img src="Ảnh 1.jpg" alt="Ảnh 1"></div>
+        <div class="photo-frame" id="photo-2"><img src="Ảnh 2.jpg" alt="Ảnh 2"></div>
+        <div class="photo-frame" id="photo-3"><img src="Ảnh 3.jpg" alt="Ảnh 3"></div>
+        <div class="photo-frame" id="photo-4"><img src="Ảnh 4.jpg" alt="Ảnh 4"></div>
+        <div class="photo-frame" id="photo-5"><img src="Ảnh 5.jpg" alt="Ảnh 5"></div>
+        <div class="photo-frame" id="photo-6"><img src="Ảnh 6.jpg" alt="Ảnh 6"></div>
+        <div class="photo-frame" id="photo-7"><img src="Ảnh 7.jpg" alt="Ảnh 7"></div>
+        <div class="photo-frame" id="photo-8"><img src="Ảnh 8.jpg" alt="Ảnh 8"></div>
+        <div class="photo-frame" id="photo-9"><img src="Ảnh 9.jpg" alt="Ảnh 9"></div>
+        <div class="photo-frame" id="photo-10"><img src="Ảnh 10.jpg" alt="Ảnh 10"></div>
     </div>
 
-    <!-- Date Display -->
+    <!-- Photo Lightbox -->
+    <div id="photo-lightbox">
+        <button id="lightbox-close">×</button>
+        <img id="lightbox-img" src="" alt="Photo">
+    </div>
+
+
+    <!-- Date -->
     <div id="date-display">
         <div class="label">Valentine's Day</div>
-        <div class="date">14 / 02 / 2026</div>
+        <div class="date">14 / 02 / 2026 <span class="heart-icon">💗</span></div>
     </div>
 
     <!-- Song Info -->
@@ -798,7 +1329,7 @@
         <span class="text">Lễ Đường - Kai Đinh</span>
     </div>
 
-    <!-- Music Toggle Button -->
+    <!-- Music Toggle -->
     <button id="music-toggle" aria-label="Toggle Music">
         <div class="music-bars">
             <div class="bar"></div>
@@ -808,18 +1339,20 @@
         </div>
     </button>
 
-    <!-- ============================================
-         💌 LỜI CHÚC - THAY ĐỔI Ở ĐÂY
-         ============================================ -->
+    <!-- Message -->
     <div id="message-container">
-        <h2 class="message-title">Gửi Em Yêu</h2>
+        <h2 class="message-title">
+            <span class="message-title-deco">✦</span>
+            <span id="msg-title">Gửi Em Yêu</span>
+            <span class="message-title-deco">✦</span>
+        </h2>
         <p class="message-text" id="message-text">Trong muôn vàn người, anh đã tìm thấy em. Trong muôn vàn ngày, mỗi
             ngày bên em đều là Valentine. Cảm ơn em đã đến bên anh, là ánh sáng, là niềm vui, là tất cả những gì anh
             cần. Yêu em không chỉ hôm nay, mà là mãi mãi về sau. 💕</p>
         <p class="message-signature">- Giang Đỗ -</p>
     </div>
 
-    <!-- Nhạc nền -->
+    <!-- Audio -->
     <audio id="bg-music" loop>
         <source src="nhac-valentine.mp3" type="audio/mpeg">
     </audio>
@@ -829,28 +1362,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
     <script>
-        // ============================================
-        // 🎨 CẤU HÌNH
-        // ============================================
         const CONFIG = {
-            PARTICLE_COUNT: 15000,
-            PARTICLE_COLORS: [0xff2d75, 0xff6b9d, 0xff1744, 0xff4081, 0xf50057],
+            PARTICLE_COUNT: 16000,
+            PARTICLE_COLORS: [0xff2d75, 0xff6b9d, 0xff1744, 0xff4081, 0xf50057, 0xff80ab],
             HEART_SCALE: 15,
             PULSE_INTENSITY: 0.12,
             PULSE_DURATION: 0.7,
             MOUSE_INTERACTION_STRENGTH: 1.5,
             MOUSE_INTERACTION_RADIUS: 4.0,
             RETURN_SPEED: 0.08,
-            SHOOTING_STAR_COUNT: 5,
-            BOKEH_COUNT: 20,
-            FALLING_HEART_COUNT: 15,
+            SHOOTING_STAR_COUNT: 6,
+            TWINKLING_STAR_COUNT: 40,
+            BOKEH_COUNT: 25,
+            FALLING_HEART_COUNT: 18,
             PHOTO_ORBIT_SPEED: 0.25
         };
 
-        // ============================================
-        // 🖼️ THREE.JS SETUP
-        // ============================================
-        let scene, camera, renderer, particleSystem;
+        let scene, camera, renderer, particleSystem, pointLight;
         let originalPositions = [];
         let velocities = [];
         let mouse = { x: 0, y: 0, active: false };
@@ -868,6 +1396,15 @@
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
             document.getElementById('canvas-container').appendChild(renderer.domElement);
 
+            // Inner glow light
+            pointLight = new THREE.PointLight(0xff2d75, 0, 30);
+            pointLight.position.set(0, 3, 5);
+            scene.add(pointLight);
+
+            // Ambient light
+            const ambientLight = new THREE.AmbientLight(0x1a0a2e, 0.3);
+            scene.add(ambientLight);
+
             createHeartParticles();
 
             window.addEventListener('resize', onWindowResize);
@@ -877,15 +1414,15 @@
             window.addEventListener('mouseleave', () => { mouse.active = false; });
 
             createShootingStars();
+            createTwinklingStars();
             createBokeh();
             createStartScreenHearts();
 
-            // Khởi tạo offset cho mỗi ảnh
             for (let i = 0; i < 10; i++) {
                 photoVerticalOffsets.push({
                     offset: Math.random() * Math.PI * 2,
                     speed: 0.8 + Math.random() * 0.5,
-                    amplitude: 8 + Math.random() * 12
+                    amplitude: 6 + Math.random() * 10
                 });
             }
 
@@ -902,9 +1439,6 @@
             animate();
         }
 
-        // ============================================
-        // 💕 TẠO TRÁI TIM - ĐẶC HƠN
-        // ============================================
         function createHeartParticles() {
             const geometry = new THREE.BufferGeometry();
             const positions = [];
@@ -914,22 +1448,23 @@
             for (let i = 0; i < CONFIG.PARTICLE_COUNT; i++) {
                 const t = Math.random() * Math.PI * 2;
                 const fillFactor = Math.random();
-                const surfaceOffset = fillFactor * 0.9;
+                const surfaceOffset = fillFactor * 0.92;
 
                 let x = 16 * Math.pow(Math.sin(t), 3);
                 let y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
 
                 const depthAngle = Math.random() * Math.PI * 2;
-                const depthRadius = Math.random() * 0.8;
+                const depthRadius = Math.random() * 0.85;
 
-                x *= (1 - surfaceOffset * 0.7);
-                y *= (1 - surfaceOffset * 0.7);
+                // Điền đặc hơn ở giữa
+                x *= (1 - surfaceOffset * 0.72);
+                y *= (1 - surfaceOffset * 0.72);
 
                 let z = Math.sin(depthAngle) * depthRadius * 5 * Math.sin(t);
 
-                x += (Math.random() - 0.5) * 1.5;
-                y += (Math.random() - 0.5) * 1.5;
-                z += (Math.random() - 0.5) * 2;
+                x += (Math.random() - 0.5) * 1.2;
+                y += (Math.random() - 0.5) * 1.2;
+                z += (Math.random() - 0.5) * 1.8;
 
                 x *= CONFIG.HEART_SCALE / 16;
                 y *= CONFIG.HEART_SCALE / 16;
@@ -941,10 +1476,14 @@
 
                 const colorIndex = Math.floor(Math.random() * CONFIG.PARTICLE_COLORS.length);
                 const color = new THREE.Color(CONFIG.PARTICLE_COLORS[colorIndex]);
+                // Hạt ở rìa sáng hơn
+                if (surfaceOffset < 0.15) {
+                    color.offsetHSL(0, 0, 0.15);
+                }
                 colors.push(color.r, color.g, color.b);
 
-                const baseSize = Math.random() * 0.12 + 0.04;
-                const sizeBoost = surfaceOffset > 0.5 ? 1.2 : 1.0;
+                const baseSize = Math.random() * 0.13 + 0.04;
+                const sizeBoost = surfaceOffset > 0.5 ? 1.15 : (surfaceOffset < 0.15 ? 1.3 : 1.0);
                 sizes.push(baseSize * sizeBoost);
             }
 
@@ -964,11 +1503,13 @@
                     varying float vAlpha;
                     uniform float time;
                     uniform float pixelRatio;
-                    
+
                     void main() {
                         vColor = color;
-                        float twinkle = sin(time * 3.0 + position.x * 10.0 + position.y * 10.0) * 0.5 + 0.5;
-                        vAlpha = 0.6 + twinkle * 0.4;
+                        // Multi-frequency twinkle
+                        float twinkle = sin(time * 3.0 + position.x * 10.0 + position.y * 10.0) * 0.3
+                                      + sin(time * 5.0 + position.z * 8.0) * 0.2 + 0.5;
+                        vAlpha = 0.55 + twinkle * 0.45;
                         vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
                         gl_PointSize = size * pixelRatio * (300.0 / -mvPosition.z) * (0.8 + twinkle * 0.4);
                         gl_Position = projectionMatrix * mvPosition;
@@ -977,13 +1518,15 @@
                 fragmentShader: `
                     varying vec3 vColor;
                     varying float vAlpha;
-                    
+
                     void main() {
                         float dist = length(gl_PointCoord - vec2(0.5));
                         if (dist > 0.5) discard;
                         float alpha = 1.0 - smoothstep(0.0, 0.5, dist);
                         alpha *= vAlpha;
-                        vec3 glow = vColor * (1.0 + (1.0 - dist * 2.0) * 0.5);
+                        // Brighter core glow
+                        float core = 1.0 - smoothstep(0.0, 0.2, dist);
+                        vec3 glow = vColor * (1.0 + core * 0.8 + (1.0 - dist * 2.0) * 0.3);
                         gl_FragColor = vec4(glow, alpha);
                     }
                 `,
@@ -993,17 +1536,21 @@
             });
 
             particleSystem = new THREE.Points(geometry, material);
+            const isMobile = window.innerWidth <= 768;
+            particleSystem.position.y = isMobile ? 2 : 5;
             scene.add(particleSystem);
         }
 
-        // ============================================
-        // 🎬 ANIMATION LOOP
-        // ============================================
         function animate() {
             requestAnimationFrame(animate);
 
             if (particleSystem && isStarted) {
-                particleSystem.material.uniforms.time.value = performance.now() * 0.001;
+                const t = performance.now() * 0.001;
+                particleSystem.material.uniforms.time.value = t;
+
+                // Pulse the inner light
+                pointLight.intensity = 0.8 + Math.sin(t * 2.5) * 0.3;
+
                 updateParticles();
                 updatePhotoOrbit();
             }
@@ -1011,9 +1558,6 @@
             renderer.render(scene, camera);
         }
 
-        // ============================================
-        // 🖼️ XOAY ẢNH QUANH TRÁI TIM - HIỆU ỨNG ĐẸP HƠN
-        // ============================================
         function updatePhotoOrbit() {
             photoOrbitAngle += CONFIG.PHOTO_ORBIT_SPEED * 0.01;
             const time = performance.now() * 0.001;
@@ -1021,53 +1565,38 @@
             const frames = document.querySelectorAll('.photo-frame');
             const isMobile = window.innerWidth <= 768;
             const centerX = window.innerWidth / 2;
-            const centerY = isMobile ? window.innerHeight / 2 - 100 : window.innerHeight / 2 - 70;
+            const centerY = isMobile ? window.innerHeight * 0.40 : window.innerHeight / 2 - 95;
 
-            // Bán kính - mobile nhỏ hơn để không che message box
-            const radiusX = isMobile ? 100 : 300;
-            const radiusY = isMobile ? 80 : 170;
+            const radiusX = isMobile ? 155 : 300;
+            const radiusY = isMobile ? 180 : 185;
 
             frames.forEach((frame, i) => {
                 const photoData = photoVerticalOffsets[i];
                 const baseAngle = (i / frames.length) * Math.PI * 2;
                 const currentAngle = baseAngle + photoOrbitAngle;
 
-                // Hiệu ứng lên xuống riêng cho mỗi ảnh
                 const verticalBob = Math.sin(time * photoData.speed + photoData.offset) * photoData.amplitude;
 
-                const frameWidth = isMobile ? 35 : 50;
+                const frameWidth = isMobile ? 27.5 : 50;
                 const x = centerX + Math.cos(currentAngle) * radiusX - frameWidth;
                 const y = centerY + Math.sin(currentAngle) * radiusY - frameWidth + verticalBob;
 
-                // Hiệu ứng scale dựa trên vị trí (xa/gần)
                 const scaleFactor = 0.85 + Math.sin(currentAngle) * 0.15;
 
-                // Xoay 3D đẹp hơn
-                const rotateY = Math.sin(currentAngle) * 20;
-                const rotateX = Math.cos(currentAngle + time * 0.3) * 8;
-                const rotateZ = Math.sin(time * 0.5 + i) * 3;
+                const rotateY = Math.sin(currentAngle) * 18;
+                const rotateX = Math.cos(currentAngle + time * 0.3) * 6;
+                const rotateZ = Math.sin(time * 0.5 + i) * 2;
 
                 frame.style.left = `${x}px`;
                 frame.style.top = `${y}px`;
-                frame.style.transform = `
-                    scale(${scaleFactor}) 
-                    rotateY(${rotateY}deg) 
-                    rotateX(${rotateX}deg) 
-                    rotateZ(${rotateZ}deg)
-                `;
+                frame.style.transform = `scale(${scaleFactor}) rotateY(${rotateY}deg) rotateX(${rotateX}deg) rotateZ(${rotateZ}deg)`;
 
-                // Ảnh ở phía trước sáng hơn
                 const brightness = 0.8 + (1 + Math.sin(currentAngle)) * 0.2;
                 frame.style.filter = `brightness(${brightness})`;
-
-                // Z-index dựa trên vị trí
                 frame.style.zIndex = Math.floor((1 + Math.sin(currentAngle)) * 5);
             });
         }
 
-        // ============================================
-        // 🖱️ CẬP NHẬT PARTICLES
-        // ============================================
         function updateParticles() {
             const positions = particleSystem.geometry.attributes.position.array;
 
@@ -1085,41 +1614,27 @@
             }
 
             for (let i = 0; i < positions.length; i += 3) {
-                const idx = i / 3;
-                const vIdx = idx * 3;
+                const vIdx = (i / 3) * 3;
 
-                const px = positions[i];
-                const py = positions[i + 1];
-                const pz = positions[i + 2];
-
-                const ox = originalPositions[i];
-                const oy = originalPositions[i + 1];
-                const oz = originalPositions[i + 2];
-
-                const dx = ox - px;
-                const dy = oy - py;
-                const dz = oz - pz;
+                const px = positions[i], py = positions[i + 1], pz = positions[i + 2];
+                const ox = originalPositions[i], oy = originalPositions[i + 1], oz = originalPositions[i + 2];
 
                 const springK = CONFIG.RETURN_SPEED;
                 const damping = 0.85;
 
-                velocities[vIdx] = (velocities[vIdx] + dx * springK) * damping;
-                velocities[vIdx + 1] = (velocities[vIdx + 1] + dy * springK) * damping;
-                velocities[vIdx + 2] = (velocities[vIdx + 2] + dz * springK) * damping;
+                velocities[vIdx] = (velocities[vIdx] + (ox - px) * springK) * damping;
+                velocities[vIdx + 1] = (velocities[vIdx + 1] + (oy - py) * springK) * damping;
+                velocities[vIdx + 2] = (velocities[vIdx + 2] + (oz - pz) * springK) * damping;
 
                 if (mouse3D) {
-                    const mdx = px - mouse3D.x;
-                    const mdy = py - mouse3D.y;
-                    const mdz = pz - mouse3D.z;
+                    const mdx = px - mouse3D.x, mdy = py - mouse3D.y, mdz = pz - mouse3D.z;
                     const dist = Math.sqrt(mdx * mdx + mdy * mdy + mdz * mdz);
-
                     if (dist < CONFIG.MOUSE_INTERACTION_RADIUS && dist > 0.01) {
                         const force = (CONFIG.MOUSE_INTERACTION_RADIUS - dist) / CONFIG.MOUSE_INTERACTION_RADIUS;
-                        const repelForce = force * CONFIG.MOUSE_INTERACTION_STRENGTH;
-
-                        velocities[vIdx] += (mdx / dist) * repelForce;
-                        velocities[vIdx + 1] += (mdy / dist) * repelForce;
-                        velocities[vIdx + 2] += (mdz / dist) * repelForce * 0.5;
+                        const repel = force * CONFIG.MOUSE_INTERACTION_STRENGTH;
+                        velocities[vIdx] += (mdx / dist) * repel;
+                        velocities[vIdx + 1] += (mdy / dist) * repel;
+                        velocities[vIdx + 2] += (mdz / dist) * repel * 0.5;
                     }
                 }
 
@@ -1131,9 +1646,7 @@
             particleSystem.geometry.attributes.position.needsUpdate = true;
         }
 
-        // ============================================
-        // HIỆU ỨNG NỀN
-        // ============================================
+        // Background effects
         function createShootingStars() {
             const container = document.getElementById('shooting-stars');
             for (let i = 0; i < CONFIG.SHOOTING_STAR_COUNT; i++) {
@@ -1141,40 +1654,63 @@
                 star.className = 'shooting-star';
                 star.style.top = `${Math.random() * 50}%`;
                 star.style.left = `${50 + Math.random() * 50}%`;
-                star.style.animationDelay = `${Math.random() * 5}s`;
-                star.style.animationDuration = `${2 + Math.random() * 2}s`;
+                star.style.animationDelay = `${Math.random() * 6}s`;
+                star.style.animationDuration = `${2 + Math.random() * 2.5}s`;
+                container.appendChild(star);
+            }
+        }
+
+        function createTwinklingStars() {
+            const container = document.getElementById('twinkling-stars');
+            for (let i = 0; i < CONFIG.TWINKLING_STAR_COUNT; i++) {
+                const star = document.createElement('div');
+                star.className = 'twinkle-star';
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.setProperty('--dur', `${2 + Math.random() * 3}s`);
+                star.style.setProperty('--delay', `${Math.random() * 4}s`);
+                if (Math.random() > 0.7) {
+                    star.style.width = '3px';
+                    star.style.height = '3px';
+                }
                 container.appendChild(star);
             }
         }
 
         function createBokeh() {
             const container = document.getElementById('bokeh-container');
-            const colors = ['rgba(255,45,117,0.3)', 'rgba(168,85,247,0.3)', 'rgba(255,107,157,0.2)', 'rgba(255,215,0,0.2)'];
+            const colors = [
+                'rgba(255,45,117,0.25)', 'rgba(168,85,247,0.25)',
+                'rgba(255,107,157,0.18)', 'rgba(255,215,0,0.15)',
+                'rgba(255,45,117,0.12)'
+            ];
 
             for (let i = 0; i < CONFIG.BOKEH_COUNT; i++) {
                 const bokeh = document.createElement('div');
                 bokeh.className = 'bokeh';
                 bokeh.style.left = `${Math.random() * 100}%`;
                 bokeh.style.top = `${Math.random() * 100}%`;
-                bokeh.style.width = `${20 + Math.random() * 60}px`;
-                bokeh.style.height = bokeh.style.width;
+                const size = 20 + Math.random() * 80;
+                bokeh.style.width = `${size}px`;
+                bokeh.style.height = `${size}px`;
                 bokeh.style.background = colors[Math.floor(Math.random() * colors.length)];
-                bokeh.style.animationDelay = `${Math.random() * 5}s`;
+                bokeh.style.animationDelay = `${Math.random() * 8}s`;
+                bokeh.style.animationDuration = `${12 + Math.random() * 8}s`;
                 container.appendChild(bokeh);
             }
         }
 
         function createFallingHearts() {
             const container = document.getElementById('falling-hearts');
-            const hearts = ['💕', '💗', '💖', '💝', '❤️', '💓', '🌹', '✨'];
+            const hearts = ['💕', '💗', '💖', '💝', '❤️', '💓', '🌹', '✨', '🦋'];
 
             for (let i = 0; i < CONFIG.FALLING_HEART_COUNT; i++) {
                 const heart = document.createElement('div');
                 heart.className = 'falling-heart';
                 heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
                 heart.style.left = `${Math.random() * 100}%`;
-                heart.style.fontSize = `${15 + Math.random() * 20}px`;
-                heart.style.animationDuration = `${5 + Math.random() * 5}s`;
+                heart.style.fontSize = `${14 + Math.random() * 18}px`;
+                heart.style.animationDuration = `${6 + Math.random() * 6}s`;
                 heart.style.animationDelay = `${Math.random() * 5}s`;
                 container.appendChild(heart);
             }
@@ -1182,98 +1718,70 @@
 
         function createStartScreenHearts() {
             const container = document.getElementById('start-hearts');
-            const hearts = ['💕', '💖', '💗', '✨'];
+            const hearts = ['💕', '💖', '💗', '✨', '🦋', '🌸'];
 
-            for (let i = 0; i < 12; i++) {
+            for (let i = 0; i < 15; i++) {
                 const heart = document.createElement('div');
                 heart.className = 'start-heart';
                 heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
                 heart.style.left = `${5 + Math.random() * 90}%`;
                 heart.style.top = `${5 + Math.random() * 90}%`;
-                heart.style.animationDelay = `${Math.random() * 2}s`;
+                heart.style.animationDelay = `${Math.random() * 3}s`;
+                heart.style.fontSize = `${1.2 + Math.random() * 1.5}rem`;
                 container.appendChild(heart);
             }
         }
 
-        // ============================================
-        // 📱 EVENT HANDLERS
-        // ============================================
-        function onMouseMove(event) {
-            mouse.x = event.clientX;
-            mouse.y = event.clientY;
-            mouse.active = true;
+        // Events
+        function onMouseMove(e) { mouse.x = e.clientX; mouse.y = e.clientY; mouse.active = true; }
+        function onTouchMove(e) {
+            e.preventDefault();
+            if (e.touches.length > 0) { mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; mouse.active = true; }
         }
-
-        function onTouchMove(event) {
-            event.preventDefault();
-            if (event.touches.length > 0) {
-                mouse.x = event.touches[0].clientX;
-                mouse.y = event.touches[0].clientY;
-                mouse.active = true;
-            }
-        }
-
         function onWindowResize() {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
-
-            if (particleSystem) {
-                particleSystem.material.uniforms.pixelRatio.value = renderer.getPixelRatio();
-            }
+            if (particleSystem) particleSystem.material.uniforms.pixelRatio.value = renderer.getPixelRatio();
         }
 
-        // ============================================
-        // 🎬 START EXPERIENCE
-        // ============================================
+        // Start
         function startExperience() {
             isStarted = true;
             const bgMusic = document.getElementById('bg-music');
-            const musicToggle = document.getElementById('music-toggle');
-            const musicBars = musicToggle.querySelector('.music-bars');
+            const musicBars = document.querySelector('.music-bars');
 
             gsap.to('#start-screen', {
                 opacity: 0,
-                duration: 1,
-                onComplete: () => {
-                    document.getElementById('start-screen').style.display = 'none';
-                }
+                duration: 1.2,
+                ease: 'power2.inOut',
+                onComplete: () => { document.getElementById('start-screen').style.display = 'none'; }
             });
 
-            gsap.to(camera.position, {
-                z: 35,
-                duration: 3,
-                ease: 'power2.out'
-            });
+            const isMobile = window.innerWidth <= 768;
+            const targetZ = isMobile ? 40 : 35;
+            gsap.to(camera.position, { z: targetZ, duration: 3.5, ease: 'power2.out' });
+
+            // Fade in light
+            gsap.to(pointLight, { intensity: 0.8, duration: 2, delay: 1 });
 
             gsap.to(['#music-toggle', '#song-info', '#date-display'], {
-                opacity: 1,
-                visibility: 'visible',
-                duration: 0.5,
-                delay: 2,
-                stagger: 0.2
+                opacity: 1, visibility: 'visible',
+                duration: 0.6, delay: 2, stagger: 0.2
             });
 
             const frames = document.querySelectorAll('.photo-frame');
             gsap.to(frames, {
-                opacity: 1,
-                visibility: 'visible',
-                duration: 0.8,
-                stagger: 0.15,
-                delay: 2.5,
-                ease: 'back.out(1.5)'
+                opacity: 1, visibility: 'visible',
+                duration: 0.8, stagger: 0.12,
+                delay: 2.5, ease: 'back.out(1.5)'
             });
 
             bgMusic.volume = 0.5;
-            bgMusic.play().catch(e => {
-                console.log('Autoplay prevented:', e);
-                musicBars.classList.add('paused');
-            });
+            bgMusic.play().catch(() => { musicBars.classList.add('paused'); });
 
             startHeartbeat();
             createFallingHearts();
-
-            // Hiện message sau 3.5 giây
             setTimeout(revealMessage, 3500);
         }
 
@@ -1290,75 +1798,266 @@
             });
         }
 
-        // ============================================
-        // ✨ TEXT REVEAL - ĐÃ SỬA
-        // ============================================
         function revealMessage() {
             const container = document.getElementById('message-container');
             const textElement = document.getElementById('message-text');
             const originalText = textElement.textContent.trim();
 
-            // Hiện container trước
             gsap.to(container, {
-                opacity: 1,
-                visibility: 'visible',
-                duration: 0.8,
-                ease: 'power3.out'
+                opacity: 1, visibility: 'visible',
+                duration: 1, ease: 'power3.out'
             });
 
-            // Tạo spans cho từng ký tự
             let html = '';
             for (let i = 0; i < originalText.length; i++) {
-                const char = originalText[i];
-                if (char === ' ') {
-                    html += ' ';
-                } else {
-                    html += `<span class="char" style="opacity:0">${char}</span>`;
-                }
+                const c = originalText[i];
+                html += c === ' ' ? ' ' : `<span class="char" style="opacity:0">${c}</span>`;
             }
             textElement.innerHTML = html;
 
-            // Animate từng chữ
             const chars = textElement.querySelectorAll('.char');
             gsap.to(chars, {
                 opacity: 1,
                 duration: 0.03,
                 stagger: 0.02,
                 ease: 'none',
-                delay: 0.5
+                delay: 0.5,
+                onUpdate: function () {
+                    chars.forEach(c => { if (parseFloat(c.style.opacity) > 0.5) c.classList.add('visible'); });
+                }
             });
 
-            // Animate signature
             gsap.from('.message-signature', {
-                opacity: 0,
-                y: 20,
-                duration: 0.8,
-                delay: 3,
-                ease: 'power2.out'
+                opacity: 0, y: 20,
+                duration: 0.8, delay: 3, ease: 'power2.out'
             });
         }
 
-        // ============================================
-        // 🎵 ĐIỀU KHIỂN NHẠC
-        // ============================================
+        // Music
         document.getElementById('music-toggle').addEventListener('click', function () {
             const bgMusic = document.getElementById('bg-music');
             const musicBars = this.querySelector('.music-bars');
+            if (bgMusic.paused) { bgMusic.play(); musicBars.classList.remove('paused'); }
+            else { bgMusic.pause(); musicBars.classList.add('paused'); }
+        });
 
-            if (bgMusic.paused) {
-                bgMusic.play();
-                musicBars.classList.remove('paused');
-            } else {
-                bgMusic.pause();
-                musicBars.classList.add('paused');
+        document.getElementById('start-btn').addEventListener('click', startExperience);
+        init();
+
+        // ==========================================
+        // 🖼️ PHOTO LIGHTBOX
+        // ==========================================
+        const lightbox = document.getElementById('photo-lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxClose = document.getElementById('lightbox-close');
+
+        document.querySelectorAll('.photo-frame img').forEach(img => {
+            img.style.cursor = 'pointer';
+            img.addEventListener('click', (e) => {
+                e.stopPropagation();
+                lightboxImg.src = img.src;
+                lightbox.classList.add('active');
+            });
+        });
+
+        lightbox.addEventListener('click', () => lightbox.classList.remove('active'));
+        lightboxClose.addEventListener('click', () => lightbox.classList.remove('active'));
+
+        // ==========================================
+        // 🎆 TOUCH FIREWORKS
+        // ==========================================
+        const heartEmojis = ['💕', '💗', '💖', '✨', '💝', '💘', '🌸', '💫'];
+
+        document.addEventListener('click', (e) => {
+            if (!isStarted) return;
+            if (e.target.closest('#music-toggle') || e.target.closest('#start-btn') ||
+                e.target.closest('.message-nav-btn') || e.target.closest('#photo-lightbox') ||
+                e.target.closest('.photo-frame')) return;
+
+            const count = 8 + Math.floor(Math.random() * 5);
+            for (let i = 0; i < count; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'touch-heart';
+                heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+
+                const angle = (Math.PI * 2 / count) * i + Math.random() * 0.5;
+                const dist = 40 + Math.random() * 60;
+                heart.style.left = `${e.clientX}px`;
+                heart.style.top = `${e.clientY}px`;
+                heart.style.setProperty('--tx', `${Math.cos(angle) * dist}px`);
+                heart.style.setProperty('--ty', `${Math.sin(angle) * dist}px`);
+
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 850);
             }
         });
 
-        // ============================================
-        // 🚀 KHỞI ĐỘNG
-        // ============================================
-        document.getElementById('start-btn').addEventListener('click', startExperience);
-        init();
+        // Canvas reference for double-tap
+        const canvas = document.getElementById('canvas-container');
+
+        // ==========================================
+        // 💌 SHAKE SURPRISE
+        // ==========================================
+        let lastShakeTime = 0;
+        let shakeThreshold = 20;
+        let lastX = 0, lastY = 0, lastZ = 0;
+
+        function triggerShakeSurprise() {
+            if (!isStarted) return;
+
+            // Flash effect
+            const flash = document.createElement('div');
+            flash.className = 'shake-flash';
+            document.body.appendChild(flash);
+            setTimeout(() => flash.remove(), 700);
+
+            // Pulse the heart big
+            if (particleSystem) {
+                gsap.to(particleSystem.scale, {
+                    x: 1.4, y: 1.4, z: 1.4,
+                    duration: 0.3,
+                    yoyo: true,
+                    repeat: 1,
+                    ease: 'power2.out'
+                });
+            }
+
+            // Flying emojis from center
+            const emojis = ['💖', '💝', '💕', '✨', '🌟', '💫', '🎆', '🎇', '💗', '🦋'];
+            const cx = window.innerWidth / 2;
+            const cy = window.innerHeight / 2;
+
+            for (let i = 0; i < 16; i++) {
+                setTimeout(() => {
+                    const emoji = document.createElement('div');
+                    emoji.className = 'shake-emoji';
+                    emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    emoji.style.fontSize = `${20 + Math.random() * 25}px`;
+                    emoji.style.left = `${cx}px`;
+                    emoji.style.top = `${cy}px`;
+
+                    const angle = (Math.PI * 2 / 16) * i;
+                    const midDist = 80 + Math.random() * 60;
+                    const endDist = 200 + Math.random() * 150;
+                    emoji.style.setProperty('--sx', `${Math.cos(angle) * midDist}px`);
+                    emoji.style.setProperty('--sy', `${Math.sin(angle) * midDist}px`);
+                    emoji.style.setProperty('--ex', `${Math.cos(angle) * endDist}px`);
+                    emoji.style.setProperty('--ey', `${Math.sin(angle) * endDist - 80}px`);
+
+                    document.body.appendChild(emoji);
+                    setTimeout(() => emoji.remove(), 1600);
+                }, i * 40);
+            }
+        }
+
+        // DeviceMotion for shake detection
+        function handleMotion(e) {
+            const acc = e.accelerationIncludingGravity;
+            if (!acc) return;
+
+            const now = Date.now();
+            if (now - lastShakeTime < 2000) return;
+
+            const dx = Math.abs(acc.x - lastX);
+            const dy = Math.abs(acc.y - lastY);
+            const dz = Math.abs(acc.z - lastZ);
+
+            if (dx + dy + dz > shakeThreshold) {
+                lastShakeTime = now;
+                triggerShakeSurprise();
+            }
+
+            lastX = acc.x; lastY = acc.y; lastZ = acc.z;
+        }
+
+        // Request permission on iOS 13+
+        if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
+            document.addEventListener('click', function requestMotion() {
+                DeviceMotionEvent.requestPermission().then(response => {
+                    if (response === 'granted') {
+                        window.addEventListener('devicemotion', handleMotion);
+                    }
+                });
+                document.removeEventListener('click', requestMotion);
+            }, { once: true });
+        } else if (typeof DeviceMotionEvent !== 'undefined') {
+            window.addEventListener('devicemotion', handleMotion);
+        }
+
+        // ==========================================
+        // 💋 DOUBLE-TAP KISS EFFECT
+        // ==========================================
+        let lastTapTime = 0;
+
+        canvas.addEventListener('click', (e) => {
+            const now = Date.now();
+            if (now - lastTapTime < 350) {
+                // Double tap detected!
+                triggerKissEffect(e.clientX, e.clientY);
+                lastTapTime = 0;
+            } else {
+                lastTapTime = now;
+            }
+        });
+
+        canvas.addEventListener('touchend', (e) => {
+            const now = Date.now();
+            if (now - lastTapTime < 350) {
+                const touch = e.changedTouches[0];
+                triggerKissEffect(touch.clientX, touch.clientY);
+                lastTapTime = 0;
+            } else {
+                lastTapTime = now;
+            }
+        });
+
+        function triggerKissEffect(x, y) {
+            if (!isStarted) return;
+
+            // Heart flash
+            const flash = document.createElement('div');
+            flash.className = 'heart-flash';
+            document.body.appendChild(flash);
+            setTimeout(() => flash.remove(), 900);
+
+            // Kiss particles
+            const kissEmojis = ['💋', '😘', '💕', '💖', '💗', '❤️‍🔥'];
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    const kiss = document.createElement('div');
+                    kiss.className = 'kiss-particle';
+                    kiss.textContent = kissEmojis[Math.floor(Math.random() * kissEmojis.length)];
+                    kiss.style.left = `${x + (Math.random() - 0.5) * 30}px`;
+                    kiss.style.top = `${y + (Math.random() - 0.5) * 30}px`;
+
+                    const angle = (Math.PI * 2 / 10) * i + Math.random() * 0.5;
+                    const dist = 50 + Math.random() * 80;
+                    kiss.style.setProperty('--kx', `${Math.cos(angle) * dist}px`);
+                    kiss.style.setProperty('--ky', `${Math.sin(angle) * dist - 40}px`);
+
+                    document.body.appendChild(kiss);
+                    setTimeout(() => kiss.remove(), 1300);
+                }, i * 50);
+            }
+
+            // Temporarily boost heart brightness
+            if (pointLight) {
+                gsap.to(pointLight, {
+                    intensity: 2.5,
+                    duration: 0.3,
+                    yoyo: true,
+                    repeat: 1,
+                    ease: 'power2.out'
+                });
+                gsap.to(pointLight.color, {
+                    r: 1, g: 0.4, b: 0.7,
+                    duration: 0.5,
+                    yoyo: true,
+                    repeat: 1
+                });
+            }
+        }
+
     </script>
 </body>
 
