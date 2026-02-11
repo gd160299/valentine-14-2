@@ -1087,6 +1087,46 @@
         }
 
 
+        /* 💋 KISS LOVE TEXT */
+        .love-text-float {
+            position: fixed;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 310;
+            pointer-events: none;
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            color: #fff;
+            text-shadow:
+                0 0 20px rgba(255, 45, 117, 0.8),
+                0 0 40px rgba(255, 45, 117, 0.5),
+                0 0 60px rgba(255, 105, 180, 0.3);
+            white-space: nowrap;
+            animation: love-text-rise 2.5s ease-out forwards;
+        }
+
+        @keyframes love-text-rise {
+            0% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(0) scale(0.5);
+            }
+
+            20% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(-20px) scale(1.1);
+            }
+
+            60% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(-60px) scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-120px) scale(0.8);
+            }
+        }
+
         /* 💌 SHAKE SURPRISE */
         .shake-flash {
             position: fixed;
@@ -2056,6 +2096,20 @@
                     repeat: 1
                 });
             }
+
+            // Floating love text
+            const loveMessages = [
+                '💕 Anh yêu em 💕',
+                '❤️ Mãi bên em ❤️',
+                '💗 Yêu em nhiều lắm 💗',
+                '💝 Love you 💝'
+            ];
+            const loveText = document.createElement('div');
+            loveText.className = 'love-text-float';
+            loveText.textContent = loveMessages[Math.floor(Math.random() * loveMessages.length)];
+            loveText.style.top = `${Math.min(y, window.innerHeight * 0.6)}px`;
+            document.body.appendChild(loveText);
+            setTimeout(() => loveText.remove(), 2600);
         }
 
     </script>
