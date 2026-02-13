@@ -686,12 +686,19 @@
             margin: 6px auto 0;
         }
 
-        /* 🎵 MUSIC */
-        #music-toggle {
+        /* Top Right Controls Wrapper */
+        .top-right-controls {
             position: fixed;
             top: 20px;
             right: 20px;
             z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* 🎵 MUSIC */
+        #music-toggle {
             width: 48px;
             height: 48px;
             border-radius: 50%;
@@ -783,10 +790,6 @@
         }
 
         #song-info {
-            position: fixed;
-            top: 20px;
-            right: 78px;
-            z-index: 100;
             padding: 8px 16px;
             background: var(--glass-bg);
             backdrop-filter: blur(10px);
@@ -1127,59 +1130,479 @@
             }
         }
 
-        /* 💌 SHAKE SURPRISE */
-        .shake-flash {
+        /* 💌 LOVE LETTER (Shake) */
+        .shake-letter-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(255, 45, 117, 0.3), transparent 70%);
-            z-index: 250;
-            pointer-events: none;
-            animation: shake-flash-anim 0.6s ease-out forwards;
+            z-index: 350;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: letter-fade-in 0.5s ease forwards;
         }
 
-        @keyframes shake-flash-anim {
-            0% {
-                opacity: 1;
-                transform: scale(0.5);
-            }
+        .shake-letter-overlay.closing {
+            animation: letter-fade-out 0.5s ease forwards;
+        }
 
-            50% {
-                opacity: 0.8;
-                transform: scale(1.2);
-            }
-
-            100% {
+        @keyframes letter-fade-in {
+            from {
                 opacity: 0;
-                transform: scale(1.5);
+            }
+
+            to {
+                opacity: 1;
             }
         }
 
-        .shake-emoji {
+        @keyframes letter-fade-out {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
+
+        .shake-letter {
+            background: linear-gradient(145deg, rgba(30, 0, 40, 0.95), rgba(60, 10, 50, 0.9));
+            border: 2px solid rgba(255, 45, 117, 0.5);
+            border-radius: 20px;
+            padding: 2rem 1.8rem;
+            max-width: 340px;
+            width: 85%;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(255, 45, 117, 0.3), 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: letter-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes letter-pop {
+            from {
+                transform: scale(0.3) rotateY(90deg);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1) rotateY(0deg);
+                opacity: 1;
+            }
+        }
+
+        .letter-deco {
+            font-size: 48px;
+            margin-bottom: 0.5rem;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        .letter-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.8rem;
+            color: var(--neon-pink);
+            text-shadow: 0 0 15px rgba(255, 45, 117, 0.5);
+            margin-bottom: 0.8rem;
+        }
+
+        .letter-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.7;
+        }
+
+        /* 🎮 MINI GAME */
+        #game-toggle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        #game-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255, 45, 117, 0.4);
+        }
+
+        #game-overlay {
             position: fixed;
-            pointer-events: none;
-            z-index: 260;
-            animation: shake-emoji-fly 1.5s ease-out forwards;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 400;
+            background: linear-gradient(180deg, #0a001a 0%, #1a0030 50%, #0d0015 100%);
+            display: none;
         }
 
-        @keyframes shake-emoji-fly {
-            0% {
+        #game-overlay.active {
+            display: block;
+        }
+
+        /* Instruction screen */
+        .game-intro {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 450;
+            padding: 2rem;
+            animation: letter-fade-in 0.4s ease;
+        }
+
+        .game-intro-icon {
+            font-size: 64px;
+            margin-bottom: 1rem;
+            animation: heartbeat 1.5s ease infinite;
+        }
+
+        .game-intro-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.2rem;
+            color: var(--neon-gold);
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            margin-bottom: 1.5rem;
+        }
+
+        .game-intro-rules {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 2;
+            text-align: left;
+            max-width: 320px;
+            margin-bottom: 1.5rem;
+        }
+
+        .game-intro-rules span {
+            font-size: 1.1rem;
+        }
+
+        .game-intro-msg {
+            font-family: 'Great Vibes', cursive;
+            font-size: 1.6rem;
+            color: var(--neon-pink);
+            text-shadow: 0 0 15px rgba(255, 45, 117, 0.4);
+            margin-bottom: 2rem;
+        }
+
+        .game-intro-btn {
+            padding: 14px 40px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple));
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 0 30px rgba(255, 45, 117, 0.5);
+            transition: all 0.3s;
+        }
+
+        .game-intro-btn:hover {
+            transform: scale(1.08);
+        }
+
+        /* Game header */
+        .game-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 410;
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .game-score {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.1rem;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .game-score span {
+            color: var(--neon-gold);
+        }
+
+        .game-progress {
+            flex: 1;
+            margin: 0 12px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .game-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-pink), var(--neon-gold));
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .game-timer {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.1rem;
+            color: #fff;
+            font-weight: 700;
+            min-width: 50px;
+            text-align: right;
+        }
+
+        .game-timer.warning {
+            color: #ff4444;
+            animation: timer-blink 0.5s ease infinite;
+        }
+
+        @keyframes timer-blink {
+
+            0%,
+            100% {
                 opacity: 1;
-                transform: translate(0, 0) scale(0.5) rotate(0deg);
             }
 
             50% {
+                opacity: 0.5;
+            }
+        }
+
+        .game-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 8px;
+        }
+
+        /* Game area */
+        .game-area {
+            position: absolute;
+            top: 50px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+            touch-action: none;
+        }
+
+        /* Chibi character */
+        .game-chibi {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 100px;
+            z-index: 415;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
+            transition: left 0.05s linear;
+        }
+
+        .game-chibi img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            pointer-events: none;
+            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.6));
+        }
+
+        /* Falling items */
+        .game-item {
+            position: absolute;
+            font-size: 32px;
+            pointer-events: none;
+            user-select: none;
+            z-index: 405;
+        }
+
+        .game-item.caught {
+            animation: game-catch 0.3s ease forwards;
+        }
+
+        @keyframes game-catch {
+            to {
+                transform: scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .game-score-pop {
+            position: fixed;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-size: 1.5rem;
+            pointer-events: none;
+            z-index: 460;
+            animation: score-pop 0.8s ease-out forwards;
+        }
+
+        .game-score-pop.plus {
+            color: #4ade80;
+            text-shadow: 0 0 10px rgba(74, 222, 128, 0.5);
+        }
+
+        .game-score-pop.minus {
+            color: #f87171;
+            text-shadow: 0 0 10px rgba(248, 113, 113, 0.5);
+        }
+
+        @keyframes score-pop {
+            0% {
                 opacity: 1;
-                transform: translate(var(--sx), var(--sy)) scale(1.2) rotate(180deg);
+                transform: translateY(0) scale(0.5);
+            }
+
+            50% {
+                transform: translateY(-30px) scale(1.2);
             }
 
             100% {
                 opacity: 0;
-                transform: translate(var(--ex), var(--ey)) scale(0.5) rotate(360deg);
+                transform: translateY(-60px) scale(0.8);
             }
         }
+
+        /* Game result */
+        .game-result {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 430;
+            animation: letter-fade-in 0.5s ease;
+        }
+
+        .game-result-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.5rem;
+            color: var(--neon-gold);
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            margin-bottom: 1rem;
+        }
+
+        .game-result-score {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .game-result-money {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.3rem;
+            color: var(--neon-pink);
+            margin-bottom: 2rem;
+        }
+
+        .game-result-btns {
+            display: flex;
+            gap: 15px;
+        }
+
+        .game-result-btn {
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s;
+        }
+
+        .game-result-btn.retry {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+        }
+
+        .game-result-btn.confirm {
+            background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple));
+            color: #fff;
+            box-shadow: 0 0 25px rgba(255, 45, 117, 0.4);
+        }
+
+        .game-result-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Processing */
+        .game-processing {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 440;
+            animation: letter-fade-in 0.5s ease;
+        }
+
+        .game-processing-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+            text-align: center;
+            line-height: 1.8;
+            max-width: 300px;
+        }
+
+        .game-processing-emoji {
+            font-size: 60px;
+            margin-bottom: 1.5rem;
+            animation: heartbeat 1s ease-in-out infinite;
+        }
+
 
         /* 💋 KISS EFFECT */
         .kiss-particle {
@@ -1363,21 +1786,44 @@
         <div class="date">14 / 02 / 2026 <span class="heart-icon">💗</span></div>
     </div>
 
-    <!-- Song Info -->
-    <div id="song-info">
-        <span class="icon">💿</span>
-        <span class="text">Lễ Đường - Kai Đinh</span>
+    <!-- Top Right Controls -->
+    <div class="top-right-controls">
+        <!-- Game Toggle -->
+        <button id="game-toggle" aria-label="Mini Game">🎮</button>
+
+        <!-- Song Info -->
+        <div id="song-info">
+            <span class="icon">💿</span>
+            <span class="text">Lễ Đường - Kai Đinh</span>
+        </div>
+
+        <!-- Music Toggle -->
+        <button id="music-toggle" aria-label="Toggle Music">
+            <div class="music-bars">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+        </button>
     </div>
 
-    <!-- Music Toggle -->
-    <button id="music-toggle" aria-label="Toggle Music">
-        <div class="music-bars">
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
+    <!-- Game Overlay -->
+    <div id="game-overlay">
+        <div class="game-header">
+            <div class="game-score">💖 <span id="game-score-val">0</span>/20</div>
+            <div class="game-progress">
+                <div class="game-progress-bar" id="game-progress-bar"></div>
+            </div>
+            <div class="game-timer" id="game-timer">30s</div>
+            <button class="game-close" id="game-close">✕</button>
         </div>
-    </button>
+        <div class="game-area" id="game-area">
+            <div class="game-chibi" id="game-chibi">
+                <img src="Model_Chibi.png" alt="Chibi">
+            </div>
+        </div>
+    </div>
 
     <!-- Message -->
     <div id="message-container">
@@ -1386,9 +1832,9 @@
             <span id="msg-title">Gửi Em Yêu</span>
             <span class="message-title-deco">✦</span>
         </h2>
-        <p class="message-text" id="message-text">Trong muôn vàn người, anh đã tìm thấy em. Trong muôn vàn ngày, mỗi
-            ngày bên em đều là Valentine. Cảm ơn em đã đến bên anh, là ánh sáng, là niềm vui, là tất cả những gì anh
-            cần. Yêu em không chỉ hôm nay, mà là mãi mãi về sau. 💕</p>
+        <p class="message-text" id="message-text">Không cần ngày nào cũng là Valentine, chỉ cần ngày nào mình cũng bình
+            yên bên nhau là đủ.
+            Chúc em Valentine hạnh phúc. Cảm ơn em đã đến và ở lại. 💕</p>
         <p class="message-signature">- Giang Đỗ -</p>
     </div>
 
@@ -1805,7 +2251,7 @@
             // Fade in light
             gsap.to(pointLight, { intensity: 0.8, duration: 2, delay: 1 });
 
-            gsap.to(['#music-toggle', '#song-info', '#date-display'], {
+            gsap.to(['#music-toggle', '#song-info', '#date-display', '#game-toggle'], {
                 opacity: 1, visibility: 'visible',
                 duration: 0.6, delay: 2, stagger: 0.2
             });
@@ -1912,7 +2358,8 @@
             if (!isStarted) return;
             if (e.target.closest('#music-toggle') || e.target.closest('#start-btn') ||
                 e.target.closest('.message-nav-btn') || e.target.closest('#photo-lightbox') ||
-                e.target.closest('.photo-frame')) return;
+                e.target.closest('.photo-frame') || e.target.closest('#game-toggle') ||
+                e.target.closest('#game-overlay')) return;
 
             const count = 8 + Math.floor(Math.random() * 5);
             for (let i = 0; i < count; i++) {
@@ -1945,49 +2392,40 @@
         function triggerShakeSurprise() {
             if (!isStarted) return;
 
-            // Flash effect
-            const flash = document.createElement('div');
-            flash.className = 'shake-flash';
-            document.body.appendChild(flash);
-            setTimeout(() => flash.remove(), 700);
+            // Love letter overlay
+            const letterOverlay = document.createElement('div');
+            letterOverlay.className = 'shake-letter-overlay';
 
-            // Pulse the heart big
-            if (particleSystem) {
-                gsap.to(particleSystem.scale, {
-                    x: 1.4, y: 1.4, z: 1.4,
-                    duration: 0.3,
-                    yoyo: true,
-                    repeat: 1,
-                    ease: 'power2.out'
-                });
-            }
+            const loveQuotes = [
+                { title: 'Yêu em...', text: 'Yêu em bằng hành động nhiều hơn lời nói. Chúc em Valentine vui vẻ nhé! 🌹' },
+                { title: 'Đơn giản là...', text: 'Không cần ngày nào cũng là lễ, chỉ cần mình cứ bình yên bên nhau như thế này là đủ. 🌿' },
+                { title: 'Anh trân trọng...', text: 'Cảm ơn em đã kiên nhẫn với những lúc anh bận rộn hay vô tâm. Anh luôn biết ơn vì điều đó. ✨' }
+            ];
+            const quote = loveQuotes[Math.floor(Math.random() * loveQuotes.length)];
 
-            // Flying emojis from center
-            const emojis = ['💖', '💝', '💕', '✨', '🌟', '💫', '🎆', '🎇', '💗', '🦋'];
-            const cx = window.innerWidth / 2;
-            const cy = window.innerHeight / 2;
+            letterOverlay.innerHTML = `
+                <div class="shake-letter">
+                    <div class="letter-deco">💌</div>
+                    <h3 class="letter-title">${quote.title}</h3>
+                    <p class="letter-text">${quote.text}</p>
+                    <div class="letter-petals"></div>
+                </div>
+            `;
 
-            for (let i = 0; i < 16; i++) {
-                setTimeout(() => {
-                    const emoji = document.createElement('div');
-                    emoji.className = 'shake-emoji';
-                    emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-                    emoji.style.fontSize = `${20 + Math.random() * 25}px`;
-                    emoji.style.left = `${cx}px`;
-                    emoji.style.top = `${cy}px`;
+            letterOverlay.addEventListener('click', () => {
+                letterOverlay.classList.add('closing');
+                setTimeout(() => letterOverlay.remove(), 500);
+            });
 
-                    const angle = (Math.PI * 2 / 16) * i;
-                    const midDist = 80 + Math.random() * 60;
-                    const endDist = 200 + Math.random() * 150;
-                    emoji.style.setProperty('--sx', `${Math.cos(angle) * midDist}px`);
-                    emoji.style.setProperty('--sy', `${Math.sin(angle) * midDist}px`);
-                    emoji.style.setProperty('--ex', `${Math.cos(angle) * endDist}px`);
-                    emoji.style.setProperty('--ey', `${Math.sin(angle) * endDist - 80}px`);
+            document.body.appendChild(letterOverlay);
 
-                    document.body.appendChild(emoji);
-                    setTimeout(() => emoji.remove(), 1600);
-                }, i * 40);
-            }
+            // Auto close after 4s
+            setTimeout(() => {
+                if (document.body.contains(letterOverlay)) {
+                    letterOverlay.classList.add('closing');
+                    setTimeout(() => letterOverlay.remove(), 500);
+                }
+            }, 4000);
         }
 
         // DeviceMotion for shake detection
@@ -2034,17 +2472,6 @@
             if (now - lastTapTime < 350) {
                 // Double tap detected!
                 triggerKissEffect(e.clientX, e.clientY);
-                lastTapTime = 0;
-            } else {
-                lastTapTime = now;
-            }
-        });
-
-        canvas.addEventListener('touchend', (e) => {
-            const now = Date.now();
-            if (now - lastTapTime < 350) {
-                const touch = e.changedTouches[0];
-                triggerKissEffect(touch.clientX, touch.clientY);
                 lastTapTime = 0;
             } else {
                 lastTapTime = now;
@@ -2110,6 +2537,419 @@
             loveText.style.top = `${Math.min(y, window.innerHeight * 0.6)}px`;
             document.body.appendChild(loveText);
             setTimeout(() => loveText.remove(), 2600);
+        }
+
+        // ==========================================
+        // 🎮 MINI GAME - Hứng trái tim
+        // ==========================================
+        const gameOverlay = document.getElementById('game-overlay');
+        const gameArea = document.getElementById('game-area');
+        const gameScoreVal = document.getElementById('game-score-val');
+        const gameTimerEl = document.getElementById('game-timer');
+        const gameProgressBar = document.getElementById('game-progress-bar');
+        const gameChibi = document.getElementById('game-chibi');
+        let gameScore = 0;
+        let gameTime = 30;
+        let gameInterval = null;
+        let spawnInterval = null;
+        let collisionInterval = null;
+        let gameRunning = false;
+        let chibiX = 50; // percentage position
+
+        // Drag handling
+        let isDragging = false;
+
+        function handleDragStart(clientX) {
+            isDragging = true;
+        }
+
+        function handleDragMove(clientX) {
+            if (!isDragging || !gameRunning) return;
+            const areaRect = gameArea.getBoundingClientRect();
+            const relX = clientX - areaRect.left;
+            const pct = Math.max(5, Math.min(95, (relX / areaRect.width) * 100));
+            chibiX = pct;
+            gameChibi.style.left = pct + '%';
+        }
+
+        function handleDragEnd() {
+            isDragging = false;
+        }
+
+        gameArea.addEventListener('mousedown', (e) => { handleDragStart(e.clientX); });
+        gameArea.addEventListener('mousemove', (e) => { handleDragMove(e.clientX); });
+        gameArea.addEventListener('mouseup', handleDragEnd);
+        gameArea.addEventListener('mouseleave', handleDragEnd);
+
+        gameArea.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            handleDragStart(e.touches[0].clientX);
+        }, { passive: false });
+        gameArea.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            handleDragMove(e.touches[0].clientX);
+        }, { passive: false });
+        gameArea.addEventListener('touchend', handleDragEnd);
+
+        document.getElementById('game-toggle').addEventListener('click', () => {
+            openGame();
+        });
+
+        document.getElementById('game-close').addEventListener('click', () => {
+            closeGame();
+        });
+
+        function openGame() {
+            gameOverlay.classList.add('active');
+            showInstructions();
+        }
+
+        function closeGame() {
+            gameOverlay.classList.remove('active');
+            stopGame();
+            // Stop Telegram polling if active
+            if (telegramPollTimer) clearInterval(telegramPollTimer);
+            // Clean up
+            gameOverlay.querySelectorAll('.game-intro, .game-result, .game-processing').forEach(el => el.remove());
+            // Reset chibi
+            chibiX = 50;
+            gameChibi.style.left = '50%';
+            // Remove falling items
+            gameArea.querySelectorAll('.game-item').forEach(el => el.remove());
+        }
+
+        function showInstructions() {
+            const intro = document.createElement('div');
+            intro.className = 'game-intro';
+            intro.innerHTML = `
+                <div class="game-intro-icon">🎮</div>
+                <div class="game-intro-title">Hứng Trái Tim</div>
+                <div class="game-intro-rules">
+                    <span>💖</span> Hứng trái tim: <b>+1 điểm</b><br>
+                    <span>🎁</span> Hứng hộp quà: <b>+1 điểm</b><br>
+                    <span>💣</span> Tránh bom: <b>-1 điểm</b><br>
+                    <span>🏆</span> Đạt <b>20 điểm</b> = hoàn thành!<br>
+                    <span>💰</span> Mỗi điểm = <b>50.000đ</b><br>
+                    <span>⏱</span> Thời gian: <b>30 giây</b><br><br>
+                    Kéo nhân vật sang trái/phải để hứng!<br>
+                    Quy đổi điểm → ấn <b>Xác nhận</b>.
+                </div>
+                <div class="game-intro-msg">Cố lên em yêu! 💪🥰</div>
+                <button class="game-intro-btn" id="game-start-btn">🎮 Bắt đầu chơi</button>
+            `;
+            gameOverlay.appendChild(intro);
+
+            document.getElementById('game-start-btn').addEventListener('click', () => {
+                intro.remove();
+                startGame();
+            });
+        }
+
+        function startGame() {
+            gameScore = 0;
+            gameTime = 30;
+            gameRunning = true;
+            chibiX = 50;
+            gameChibi.style.left = '50%';
+            updateGameUI();
+            gameTimerEl.classList.remove('warning');
+
+            // Remove any previous overlays
+            gameOverlay.querySelectorAll('.game-result, .game-processing, .game-intro').forEach(el => el.remove());
+            // Remove any leftover items
+            gameArea.querySelectorAll('.game-item').forEach(el => el.remove());
+
+            gameInterval = setInterval(() => {
+                gameTime--;
+                updateGameUI();
+                if (gameTime <= 5) gameTimerEl.classList.add('warning');
+                if (gameTime <= 0) {
+                    endGame();
+                }
+            }, 1000);
+
+            spawnInterval = setInterval(spawnItem, 600);
+            collisionInterval = setInterval(checkCollisions, 50);
+        }
+
+        function stopGame() {
+            gameRunning = false;
+            clearInterval(gameInterval);
+            clearInterval(spawnInterval);
+            clearInterval(collisionInterval);
+        }
+
+        function updateGameUI() {
+            gameScoreVal.textContent = gameScore;
+            gameTimerEl.textContent = `${gameTime}s`;
+            gameProgressBar.style.width = `${Math.min(100, (gameScore / 20) * 100)}%`;
+        }
+
+        function spawnItem() {
+            if (!gameRunning) return;
+
+            const item = document.createElement('div');
+            item.className = 'game-item';
+
+            const rand = Math.random();
+            if (rand < 0.2) {
+                item.textContent = '💣';
+                item.dataset.type = 'bomb';
+            } else if (rand < 0.4) {
+                item.textContent = '🎁';
+                item.dataset.type = 'gift';
+            } else {
+                const hearts = ['💖', '💗', '💕', '💝', '💓'];
+                item.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                item.dataset.type = 'heart';
+            }
+
+            const x = 10 + Math.random() * (gameArea.clientWidth - 50);
+            item.style.left = `${x}px`;
+            item.style.top = '-40px';
+
+            gameArea.appendChild(item);
+
+            // Fall animation
+            const fallDuration = 2000 + Math.random() * 1500;
+            const fallHeight = gameArea.clientHeight + 50;
+
+            gsap.to(item, {
+                top: fallHeight,
+                duration: fallDuration / 1000,
+                ease: 'none',
+                onComplete: () => {
+                    if (item.parentNode) item.remove();
+                }
+            });
+        }
+
+        function checkCollisions() {
+            if (!gameRunning) return;
+
+            const chibiRect = gameChibi.getBoundingClientRect();
+            // Use only the top part of chibi for collision (head area)
+            const catchZone = {
+                left: chibiRect.left - 10,
+                right: chibiRect.right + 10,
+                top: chibiRect.top,
+                bottom: chibiRect.top + 50
+            };
+
+            const items = gameArea.querySelectorAll('.game-item:not(.caught)');
+            items.forEach(item => {
+                const itemRect = item.getBoundingClientRect();
+                const itemCenterX = itemRect.left + itemRect.width / 2;
+                const itemCenterY = itemRect.top + itemRect.height / 2;
+
+                if (itemCenterX >= catchZone.left && itemCenterX <= catchZone.right &&
+                    itemCenterY >= catchZone.top && itemCenterY <= catchZone.bottom) {
+
+                    item.classList.add('caught');
+
+                    const pop = document.createElement('div');
+                    pop.style.left = `${itemRect.left}px`;
+                    pop.style.top = `${itemRect.top}px`;
+
+                    if (item.dataset.type === 'bomb') {
+                        gameScore = Math.max(0, gameScore - 1);
+                        pop.className = 'game-score-pop minus';
+                        pop.textContent = '-1';
+                    } else {
+                        gameScore++;
+                        pop.className = 'game-score-pop plus';
+                        pop.textContent = '+1';
+                    }
+
+                    updateGameUI();
+                    document.body.appendChild(pop);
+                    setTimeout(() => pop.remove(), 900);
+                    setTimeout(() => { if (item.parentNode) item.remove(); }, 300);
+
+                    // Check for win
+                    if (gameScore >= 20) {
+                        endGame();
+                    }
+                }
+            });
+        }
+
+        function endGame() {
+            stopGame();
+            // Remove falling items
+            gameArea.querySelectorAll('.game-item').forEach(el => el.remove());
+
+            const money = gameScore * 50000;
+            const moneyFormatted = money.toLocaleString('vi-VN') + 'đ';
+
+            const result = document.createElement('div');
+            result.className = 'game-result';
+            result.innerHTML = `
+                <div class="game-result-title">${gameScore >= 20 ? '🎉 Hoàn hảo!' : gameScore >= 10 ? '� Tuyệt vời!' : '💖 Kết quả'}</div>
+                <div class="game-result-score">${gameScore} điểm</div>
+                <div class="game-result-money">💰 ${moneyFormatted}</div>
+                <div class="game-result-btns">
+                    <button class="game-result-btn retry" id="game-retry">🔄 Chơi lại</button>
+                    <button class="game-result-btn confirm" id="game-confirm">✅ Xác nhận</button>
+                </div>
+            `;
+            gameOverlay.appendChild(result);
+
+            document.getElementById('game-retry').addEventListener('click', () => {
+                result.remove();
+                startGame();
+            });
+
+            document.getElementById('game-confirm').addEventListener('click', () => {
+                result.remove();
+                showProcessing(gameScore, moneyFormatted);
+            });
+        }
+
+        function showProcessing(score, moneyFormatted) {
+            const proc = document.createElement('div');
+            proc.className = 'game-processing';
+            proc.innerHTML = `
+                <div class="game-processing-emoji">💳</div>
+                <div class="game-processing-text">
+                    Hệ thống đang xử lý giao dịch...<br>
+                    Chờ anh xác nhận ting ting nhé! 🔔
+                </div>
+                <div class="game-processing-status" id="processing-status" style="margin-top:1.5rem;font-size:0.85rem;color:rgba(255,255,255,0.5);">⏳ Đang chờ xác nhận...</div>
+            `;
+            gameOverlay.appendChild(proc);
+
+            // Fireworks
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const fw = document.createElement('div');
+                    fw.className = 'touch-heart';
+                    fw.textContent = ['✨', '🎆', '🎇', '🎉', '💖', '💫'][Math.floor(Math.random() * 6)];
+                    fw.style.left = `${Math.random() * window.innerWidth}px`;
+                    fw.style.top = `${Math.random() * window.innerHeight}px`;
+                    fw.style.setProperty('--tx', `${(Math.random() - 0.5) * 100}px`);
+                    fw.style.setProperty('--ty', `${(Math.random() - 0.5) * 100}px`);
+                    fw.style.zIndex = '450';
+                    document.body.appendChild(fw);
+                    setTimeout(() => fw.remove(), 850);
+                }, i * 100);
+            }
+
+            // Send Telegram with inline keyboard and poll for confirmation
+            sendTelegramWithConfirmation(score, moneyFormatted, proc);
+        }
+
+        const TELE_TOKEN = '8548485165:AAHF_ehDBjMZifsOdFO3asPAQ9VcnCNVFW0';
+        const TELE_CHAT_ID = '6029916657';
+        let telegramPollTimer = null;
+
+        function sendTelegramWithConfirmation(score, moneyFormatted, procElement) {
+            const text = `💖 Ny vừa chơi xong game.\n🎯 Điểm: ${score}\n💰 Số tiền cần chuyển: ${moneyFormatted}\n\n⬇️ Bấm nút bên dưới để xác nhận đã chuyển:`;
+
+            // Send message with inline keyboard
+            fetch(`https://api.telegram.org/bot${TELE_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: TELE_CHAT_ID,
+                    text: text,
+                    reply_markup: {
+                        inline_keyboard: [[
+                            { text: '✅ Đã chuyển tiền', callback_data: 'confirm_payment' }
+                        ]]
+                    }
+                })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.ok) {
+                        // Start polling for callback confirmation
+                        startPollingConfirmation(procElement);
+                    }
+                })
+                .catch(err => {
+                    console.log('Telegram send error:', err);
+                    // Fallback: auto close after 10s if Telegram fails
+                    setTimeout(() => closeGame(), 10000);
+                });
+        }
+
+        function startPollingConfirmation(procElement) {
+            let lastUpdateId = 0;
+
+            // Get latest update ID first to skip old messages
+            fetch(`https://api.telegram.org/bot${TELE_TOKEN}/getUpdates?offset=-1`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.ok && data.result.length > 0) {
+                        lastUpdateId = data.result[data.result.length - 1].update_id;
+                    }
+                    // Start polling
+                    telegramPollTimer = setInterval(() => {
+                        pollTelegramUpdates(lastUpdateId, procElement);
+                    }, 3000);
+                })
+                .catch(() => {
+                    // Fallback: auto close after 30s if polling fails
+                    setTimeout(() => closeGame(), 30000);
+                });
+        }
+
+        function pollTelegramUpdates(startOffset, procElement) {
+            fetch(`https://api.telegram.org/bot${TELE_TOKEN}/getUpdates?offset=${startOffset + 1}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.ok || data.result.length === 0) return;
+
+                    for (const update of data.result) {
+                        if (update.callback_query && update.callback_query.data === 'confirm_payment') {
+                            // Confirmation received!
+                            clearInterval(telegramPollTimer);
+
+                            // Answer the callback to remove loading state on Telegram
+                            fetch(`https://api.telegram.org/bot${TELE_TOKEN}/answerCallbackQuery`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    callback_query_id: update.callback_query.id,
+                                    text: 'Đã xác nhận! 💖'
+                                })
+                            });
+
+                            // Update UI to show success
+                            if (procElement && document.body.contains(procElement)) {
+                                procElement.innerHTML = `
+                                <div class="game-processing-emoji">✅</div>
+                                <div class="game-processing-text" style="color:#4ade80;">
+                                    Đã xác nhận thành công!<br>
+                                    Ting ting sẽ đến sớm thôi! 💖🔔
+                                </div>
+                            `;
+                            }
+
+                            // More fireworks on confirmation!
+                            for (let i = 0; i < 15; i++) {
+                                setTimeout(() => {
+                                    const fw = document.createElement('div');
+                                    fw.className = 'touch-heart';
+                                    fw.textContent = ['✨', '🎆', '💖', '🎉', '💸', '💰'][Math.floor(Math.random() * 6)];
+                                    fw.style.left = `${Math.random() * window.innerWidth}px`;
+                                    fw.style.top = `${Math.random() * window.innerHeight}px`;
+                                    fw.style.setProperty('--tx', `${(Math.random() - 0.5) * 100}px`);
+                                    fw.style.setProperty('--ty', `${(Math.random() - 0.5) * 100}px`);
+                                    fw.style.zIndex = '450';
+                                    document.body.appendChild(fw);
+                                    setTimeout(() => fw.remove(), 850);
+                                }, i * 120);
+                            }
+
+                            // Close game after showing success
+                            setTimeout(() => closeGame(), 3000);
+                            return;
+                        }
+                    }
+                })
+                .catch(err => console.log('Poll error:', err));
         }
 
     </script>
